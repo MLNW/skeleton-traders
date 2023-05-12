@@ -4,6 +4,11 @@
     100
   ],
   "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modifications",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
   "prettier.documentSelectors": [
     "**/*.svelte"
   ],

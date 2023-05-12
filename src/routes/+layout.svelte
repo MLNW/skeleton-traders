@@ -1,26 +1,12 @@
 <script lang="ts">
-  import { enhance } from '$app/forms';
-  import { page } from '$app/stores';
+  import Header from '$lib/components/Header.svelte';
+  import { AppShell } from '@skeletonlabs/skeleton';
   import '../app.postcss';
-  import { AppBar, AppShell } from '@skeletonlabs/skeleton';
-
-  $: ({ user } = $page.data);
 </script>
 
 <AppShell>
   <svelte:fragment slot="header">
-    <AppBar>
-      <svelte:fragment slot="lead">
-        <a href="/">SkeletonTraders</a>
-      </svelte:fragment>
-      <svelte:fragment slot="trail">
-        {#if user}
-          <form method="post" action="/logout" use:enhance>
-            <button class="btn" type="submit">Logout</button>
-          </form>
-        {/if}
-      </svelte:fragment>
-    </AppBar>
+    <Header />
   </svelte:fragment>
   <div class="m-4">
     <slot />
