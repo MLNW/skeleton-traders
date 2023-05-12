@@ -1,51 +1,61 @@
-import { PUBLIC_API_URL } from '$env/static/public';
-import { error } from '@sveltejs/kit';
+import { fetchFactions, login, register } from '$lib/server/api.js';
+import { fail } from '@sveltejs/kit';
+
+export const load = async ({ fetch }) => {
+  return {
+    stream: {
+      // TODO: Handle pagination if there are ever more than 10 factions
+      factions: fetchFactions({ fetch })
+    }
+  };
+};
 
 export const actions = {
   login: async ({ fetch, request, cookies }) => {
     const formData = await request.formData();
-    const token = formData.get('token');
+    const token = formData.get('token')?.toString();
 
-    const response = await fetch(`${PUBLIC_API_URL}/v2/my/agent`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    if (!response.ok) {
-      throw error(response.status, await response.json());
+    if (!token) {
+      return fail(400, { message: 'Token is required' });
     }
 
-    cookies.set('token', token);
+    try {
+      const response = await login({ fetch, token: token });
+      cookies.set('token', token);
 
-    const agent = (await response.json()).data;
-
-    return {
-      agent
-    };
+      return {
+        agent: response.data
+      };
+    } catch (e) {
+      let error: string = e.body.message;
+      const searchFor = `: "${token}"`;
+      if (error.endsWith(searchFor)) {
+        error = error.split(searchFor)[0];
+      }
+      return fail(e.status, { login: { error } });
+    }
   },
   register: async ({ fetch, request, cookies }) => {
     const formData = await request.formData();
     const name = formData.get('name');
     const faction = formData.get('faction');
 
-    const response = await fetch('https://api.spacetraders.io/v2/register', {
-      method: 'POST',
-      body: JSON.stringify({ symbol: name, faction: faction }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw error(response.status, await response.json());
+    if (!name || !faction) {
+      return fail(400, { message: 'Name and faction are required' });
     }
 
-    const agent = (await response.json()).data;
+    try {
+      const response = await register({
+        fetch,
+        name: name.toString(),
+        faction: faction.toString()
+      });
+      const agent = response.data;
 
-    cookies.set('token', data.token);
-
-    return {
-      agent
-    };
+      cookies.set('token', agent.token);
+      return { agent };
+    } catch (e) {
+      return fail(e.status, { register: { error: e.body.message } });
+    }
   }
 };

@@ -1,4 +1,4 @@
-import { PUBLIC_API_URL } from '$env/static/public';
+import { login } from '$lib/server/api';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
@@ -15,12 +15,12 @@ const logger = (async ({ event, resolve }) => {
 const authorize = (async ({ event, resolve }) => {
   const token = event.cookies.get('token');
   if (token) {
-    const response = await fetch(`${PUBLIC_API_URL}/v2/my/agent`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const agent = (await response.json()).data;
+    const response = await login({ fetch, token });
+    if (response.status === 401) {
+      throw redirect(307, '/logout');
+    }
 
-    event.locals.user = { ...agent };
+    event.locals.user = { ...response.data };
     if (event.url.pathname === '/login') {
       throw redirect(307, '/');
     }
@@ -43,8 +43,12 @@ export const handleFetch = async ({ fetch, request, event }) => {
   const start = Date.now();
   const response = await fetch(request);
   const elapsedTime = Date.now() - start;
-
   console.log(`${request.method} ${request.url} -> ${response.status} (${elapsedTime}ms) `);
+
+  if (event.route.id !== '/login' && response.status === 401) {
+    console.log('Token is invalid or expired, redirecting to /logout');
+    throw redirect(307, '/logout');
+  }
 
   return response;
 };

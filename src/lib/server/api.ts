@@ -41,14 +41,47 @@ export const genericFetch = async ({
     headers,
     body: body ? JSON.stringify(body) : undefined
   });
+
   if (!response.ok) {
-    return Promise.reject(error(response.status, await response.json()));
+    const reason = await response.json();
+    throw error(response.status, { ...reason.error });
   }
+
   return response.json();
 };
 
 export const fetchAgent = async ({ fetch }: { fetch: FetchFunction }) => {
   return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/my/agent` });
+};
+
+export const login = async ({ fetch, token }: { fetch: FetchFunction; token: string }) => {
+  return genericFetch({
+    fetch,
+    url: `${PUBLIC_API_URL}/v2/my/agent`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
+
+export const register = async ({
+  fetch,
+  name,
+  faction
+}: {
+  fetch: FetchFunction;
+  name: string;
+  faction: string;
+}) => {
+  return genericFetch({
+    fetch,
+    url: `${PUBLIC_API_URL}/v2/register`,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: { symbol: name, faction }
+  });
 };
 
 export const fetchShips = async ({
@@ -69,4 +102,8 @@ export const fetchShips = async ({
 
 export const fetchShip = async ({ fetch, symbol }: { fetch: FetchFunction; symbol: string }) => {
   return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/my/ships/${symbol}` });
+};
+
+export const fetchFactions = async ({ fetch }: { fetch: FetchFunction }) => {
+  return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/factions` });
 };

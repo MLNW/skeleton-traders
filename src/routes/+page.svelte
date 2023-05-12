@@ -16,8 +16,8 @@
       <p class="variant-filled-primary">Loading</p>
     {:then ship}
       <p>{ship.data.symbol}</p>
-    {:catch data}
-      <p class="variant-filled-error">{data.error.code} {data.error.message}</p>
+    {:catch error}
+      <p class="variant-filled-error">{error.code} {error.message}</p>
     {/await}
   </div>
 </div>
