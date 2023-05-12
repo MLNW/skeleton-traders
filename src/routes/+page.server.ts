@@ -1,15 +1,11 @@
-import { PUBLIC_API_URL } from '$env/static/public';
-import { error } from '@sveltejs/kit';
+import { fetchShip, fetchShips } from '$lib/server/api';
 
 export const load = async ({ fetch }) => {
-  const response = await fetch(`${PUBLIC_API_URL}/v2/my/agent`);
-  if (!response.ok) {
-    throw error(response.status, await response.json());
-  }
-
-  const agent = (await response.json()).data;
-
   return {
-    agent
+    stream: {
+      ships: fetchShips({ fetch, limit: 5 }),
+      // TODO: Remove as this is only a demonstration of a failure
+      ship: fetchShip({ fetch, symbol: 'MLNOTW-2' })
+    }
   };
 };

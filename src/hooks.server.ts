@@ -39,5 +39,12 @@ export const handleFetch = async ({ fetch, request, event }) => {
   if (token) {
     request.headers.set('Authorization', `Bearer ${token}`);
   }
-  return fetch(request);
+
+  const start = Date.now();
+  const response = await fetch(request);
+  const elapsedTime = Date.now() - start;
+
+  console.log(`${request.method} ${request.url} (${elapsedTime}ms)`);
+
+  return response;
 };
