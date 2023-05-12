@@ -44,7 +44,7 @@ export const handleFetch = async ({ fetch, request, event }) => {
   const response = await fetch(request);
   const elapsedTime = Date.now() - start;
 
-  console.log(`${request.method} ${request.url} (${elapsedTime}ms)`);
+  console.log(`${request.method} ${request.url} -> ${response.status} (${elapsedTime}ms) `);
 
   return response;
 };
