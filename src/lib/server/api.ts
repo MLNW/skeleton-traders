@@ -86,17 +86,17 @@ export const register = async ({
 
 export const fetchShips = async ({
   fetch,
-  limit,
-  page
+  page,
+  limit
 }: {
   fetch: FetchFunction;
-  limit?: number;
   page?: number;
+  limit?: number;
 }) => {
   return genericFetch({
     fetch,
     url: `${PUBLIC_API_URL}/v2/my/ships`,
-    queryParams: { limit, page }
+    queryParams: { page, limit }
   });
 };
 

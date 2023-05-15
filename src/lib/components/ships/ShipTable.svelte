@@ -1,13 +1,29 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { createTable, Render, Subscribe } from 'svelte-headless-table';
-  import type { Readable } from 'svelte/store';
+  import { Paginator } from '@skeletonlabs/skeleton';
+  import { Render, Subscribe, createTable } from 'svelte-headless-table';
+  import { readable } from 'svelte/store';
 
-  export let ships: Readable<any>;
+  export let ships: object[];
+  export let page = 1;
+  export let limit = 5;
+  export let onPageChange: (e: CustomEvent) => void;
+  export let onAmountChange: (e: CustomEvent) => void;
 
-  $: table = createTable(ships);
+  $: tableData = readable(ships);
+
+  $: pageOptions = {
+    offset: page - 1,
+    limit,
+    size: ships.length,
+    amounts: [1, 2, 5, 10]
+  };
+
+  $: table = createTable(tableData);
   $: columns = table.createColumns([
     table.column({ header: 'Name', accessor: 'symbol' }),
+    table.column({ header: 'System', accessor: (e) => e.nav.systemSymbol }),
+    table.column({ header: 'Waypoint', accessor: (e) => e.nav.waypointSymbol }),
     table.column({ header: 'Crew', accessor: (e) => `${e.crew.current}/${e.crew.capacity}` }),
     table.column({ header: 'Status', accessor: (e) => e.nav.status }),
     table.column({ header: 'Speed', accessor: (e) => e.engine.speed }),
@@ -17,7 +33,7 @@
   $: ({ headerRows, rows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns));
 </script>
 
-<div class="table-container">
+<div class="table-container flex flex-col space-y-2">
   <table class="table table-hover" {...$tableAttrs}>
     <thead>
       {#each $headerRows as headerRow (headerRow.id)}
@@ -37,7 +53,11 @@
     <tbody {...$tableBodyAttrs}>
       {#each $rows as row (row.id)}
         <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-          <tr class="cursor-pointer" {...rowAttrs} on:click={() => goto(`/ships/${row.original.symbol}`)}>
+          <tr
+            class="cursor-pointer"
+            {...rowAttrs}
+            on:click={() => goto(`/ships/${row.original.symbol}`)}
+          >
             {#each row.cells as cell (cell.id)}
               <Subscribe attrs={cell.attrs()} let:attrs>
                 <td {...attrs}>
@@ -50,4 +70,5 @@
       {/each}
     </tbody>
   </table>
+  <Paginator bind:settings={pageOptions} on:page={onPageChange} on:amount={onAmountChange} />
 </div>
