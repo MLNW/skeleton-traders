@@ -1,5 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import ShipTable from '$lib/components/ships/ShipTable.svelte';
+  import { readable } from 'svelte/store';
 
   $: ({ symbol, headquarters, credits } = $page.data.user);
 </script>
@@ -11,13 +13,11 @@
     <p>{credits}</p>
   </div>
   <div class="card">
-    <h2>Main Ship</h2>
-    {#await $page.data.stream.ship}
-      <p class="variant-filled-primary">Loading</p>
-    {:then ship}
-      <p>{ship.data.symbol}</p>
-    {:catch error}
-      <p class="variant-filled-error">{error.code} {error.message}</p>
-    {/await}
+    <header class="card-header">
+      <h2>Ships</h2>
+    </header>
+    <div class="p-4">
+      <ShipTable ships={readable($page.data.ships.data)} />
+    </div>
   </div>
 </div>
