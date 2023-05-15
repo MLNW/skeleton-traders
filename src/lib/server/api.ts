@@ -1,10 +1,10 @@
 import { PUBLIC_API_URL } from '$env/static/public';
 import { error } from '@sveltejs/kit';
 
-type FetchFunction = typeof fetch;
+type Fetch = typeof fetch;
 
 type FetchOptions = {
-  fetch: FetchFunction;
+  fetch: Fetch;
   url: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   headers?: Record<string, string>;
@@ -50,11 +50,11 @@ export const genericFetch = async ({
   return response.json();
 };
 
-export const fetchAgent = async ({ fetch }: { fetch: FetchFunction }) => {
+export const fetchAgent = async ({ fetch }: { fetch: Fetch }) => {
   return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/my/agent` });
 };
 
-export const login = async ({ fetch, token }: { fetch: FetchFunction; token: string }) => {
+export const login = async ({ fetch, token }: { fetch: Fetch; token: string }) => {
   return genericFetch({
     fetch,
     url: `${PUBLIC_API_URL}/v2/my/agent`,
@@ -69,7 +69,7 @@ export const register = async ({
   name,
   faction
 }: {
-  fetch: FetchFunction;
+  fetch: Fetch;
   name: string;
   faction: string;
 }) => {
@@ -89,7 +89,7 @@ export const fetchShips = async ({
   page,
   limit
 }: {
-  fetch: FetchFunction;
+  fetch: Fetch;
   page?: number;
   limit?: number;
 }) => {
@@ -100,10 +100,26 @@ export const fetchShips = async ({
   });
 };
 
-export const fetchShip = async ({ fetch, symbol }: { fetch: FetchFunction; symbol: string }) => {
+export const fetchShip = async ({ fetch, symbol }: { fetch: Fetch; symbol: string }) => {
   return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/my/ships/${symbol}` });
 };
 
-export const fetchFactions = async ({ fetch }: { fetch: FetchFunction }) => {
+export const fetchFactions = async ({ fetch }: { fetch: Fetch }) => {
   return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/factions` });
+};
+
+export const fetchSystems = async ({
+  fetch,
+  page,
+  limit
+}: {
+  fetch: Fetch;
+  page?: number;
+  limit?: number;
+}) => {
+  return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/systems`, queryParams: { page, limit } });
+};
+
+export const fetchSystem = async ({ fetch, symbol }: { fetch: Fetch; symbol: string }) => {
+  return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/systems/${symbol}` });
 };
