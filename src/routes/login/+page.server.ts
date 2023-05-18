@@ -1,7 +1,11 @@
 import { fetchFactions, login, register } from '$lib/server/api.js';
 import { fail } from '@sveltejs/kit';
 
-export const load = async ({ fetch }) => {
+export const load = async ({ fetch, setHeaders }) => {
+  setHeaders({
+    'Cache-Control': 'max-age=3600'
+  });
+
   return {
     stream: {
       // TODO: Handle pagination if there are ever more than 10 factions

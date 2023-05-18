@@ -1,7 +1,11 @@
 import { fetchWaypoint } from '$lib/server/api';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ fetch, params, setHeaders }) => {
+  setHeaders({
+    'Cache-Control': 'max-age=300'
+  });
+
   return {
     waypoint: await fetchWaypoint({
       fetch,
