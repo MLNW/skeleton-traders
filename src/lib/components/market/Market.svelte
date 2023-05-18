@@ -11,7 +11,7 @@
     <header class="card-header">
       <h2>Market</h2>
     </header>
-    <footer class="card-footer">
+    <footer class="card-footer xl:flex xl:space-x-2">
       {#if market.tradeGoods}
         <section>
           <h3>Trade Goods</h3>

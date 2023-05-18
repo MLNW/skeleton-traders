@@ -1,7 +1,10 @@
 <script lang="ts">
   import { convertSymbolToName } from '$lib/utils/symbols';
-  import { Render, Subscribe, createTable } from 'svelte-headless-table';
+  import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
   import { readable } from 'svelte/store';
+  import Badge from './Badge.svelte';
+  import BuySellButton from './BuySellButton.svelte';
+  import Number from './Number.svelte';
 
   export let data: object[];
 
@@ -9,16 +12,42 @@
 
   $: table = createTable(tableData);
   $: columns = table.createColumns([
-    table.column({ header: 'Name', accessor: (e) => convertSymbolToName(e.symbol) }),
-    table.column({ header: 'Volume', accessor: 'tradeVolume' }),
-    table.column({ header: 'Supply', accessor: (e) => convertSymbolToName(e.supply) }),
-    table.column({ header: 'Buy', accessor: 'purchasePrice' }),
-    table.column({ header: 'Sell', accessor: 'sellPrice' })
+    table.column({
+      header: 'Name',
+      accessor: (e) => convertSymbolToName(e.symbol),
+      cell: ({ value }) => createRender(Badge, { text: value })
+    }),
+    table.column({
+      header: 'Supply',
+      accessor: (e) => convertSymbolToName(e.supply),
+      cell: ({ value }) => createRender(Badge, { text: value })
+    }),
+    table.column({
+      header: () => createRender(Number, { value: 'Trade Volume' }),
+      accessor: 'tradeVolume',
+      cell: ({ value }) => createRender(Number, { value })
+    }),
+    table.column({
+      header: () => createRender(Number, { value: 'Buy' }),
+      accessor: 'purchasePrice',
+      cell: ({ value }) => createRender(BuySellButton, { price: value })
+    }),
+    table.column({
+      header: () => createRender(Number, { value: 'Sell' }),
+      accessor: 'sellPrice',
+      cell: ({ value }) => createRender(BuySellButton, { price: value })
+    })
   ]);
   $: ({ headerRows, rows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns));
 </script>
 
-<div class="table-container flex flex-col space-y-2">
+<div class="table-container">
+  <table class="table table-compact table-hover">
+    <thead />
+  </table>
+</div>
+
+<div class="table-container">
   <table class="table table-compact table-hover" {...$tableAttrs}>
     <thead>
       {#each $headerRows as headerRow (headerRow.id)}

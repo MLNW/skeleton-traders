@@ -1,7 +1,9 @@
 <script lang="ts">
   import { convertSymbolToName } from '$lib/utils/symbols';
-  import { Render, Subscribe, createTable } from 'svelte-headless-table';
+  import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
   import { readable } from 'svelte/store';
+  import Badge from './Badge.svelte';
+  import Number from './Number.svelte';
 
   export let data: object;
 
@@ -11,11 +13,27 @@
   $: columns = table.createColumns([
     table.column({ header: 'When', accessor: 'timestamp' }),
     table.column({ header: 'Ship', accessor: 'shipSymbol' }),
-    table.column({ header: 'Good', accessor: (e) => convertSymbolToName(e.tradeSymbol) }),
+    table.column({
+      header: 'Good',
+      accessor: (e) => convertSymbolToName(e.tradeSymbol),
+      cell: ({ value }) => createRender(Badge, { text: value })
+    }),
     table.column({ header: 'Type', accessor: 'type' }),
-    table.column({ header: 'Units', accessor: 'units' }),
-    table.column({ header: 'Per Unit', accessor: 'pricePerUnit' }),
-    table.column({ header: 'Total', accessor: 'totalPrice' })
+    table.column({
+      header: () => createRender(Number, { value: 'Units' }),
+      accessor: 'units',
+      cell: ({ value }) => createRender(Number, { value })
+    }),
+    table.column({
+      header: () => createRender(Number, { value: 'Per Unit' }),
+      accessor: 'pricePerUnit',
+      cell: ({ value }) => createRender(Number, { value })
+    }),
+    table.column({
+      header: () => createRender(Number, { value: 'Total' }),
+      accessor: 'totalPrice',
+      cell: ({ value }) => createRender(Number, { value })
+    })
   ]);
   $: ({ headerRows, rows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns));
 </script>
