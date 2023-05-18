@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
+  import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
   import SystemTable from '$lib/components/SystemTable.svelte';
 
   let pageNumber = 1;
@@ -22,7 +23,7 @@
   </header>
   <div class="p-4">
     {#await $page.data.stream.systems}
-      <p class="variant-filled-secondary">Loading</p>
+      <LoadingIndicator />
     {:then systems}
       <SystemTable {systems} onAmountChange={handlePagination} onPageChange={handlePagination} />
     {/await}

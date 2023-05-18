@@ -1,11 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
   import Crew from '$lib/components/ships/Crew.svelte';
 </script>
 
 <div class="card">
   {#await $page.data.stream.ship}
-    <p class="variant-filled-primary">Loading</p>
+    <LoadingIndicator />
   {:then ship}
     <h2>{ship.data.symbol} ({ship.data.frame.name})</h2>
     <p>

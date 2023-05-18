@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
+  import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
   import ShipTable from '$lib/components/ships/ShipTable.svelte';
 
   $: ({ symbol, headquarters, credits } = $page.data.user);
@@ -30,7 +31,7 @@
     </header>
     <div class="p-4">
       {#await $page.data.stream.ships}
-        <p class="variant-filled-secondary">Loading</p>
+        <LoadingIndicator />
       {:then ships}
         <ShipTable
           ships={ships.data}
