@@ -12,9 +12,14 @@
   </svelte:fragment>
   <svelte:fragment slot="trail">
     {#if user}
-      <form method="post" action="/logout" use:enhance>
-        <button class="btn" type="submit">Logout</button>
-      </form>
+      <nav class="flex">
+        <ol>
+          <li><a class="btn" href="/systems">Systems</a></li>
+        </ol>
+        <form method="post" action="/logout" use:enhance>
+          <button class="btn" type="submit">Logout</button>
+        </form>
+      </nav>
     {/if}
   </svelte:fragment>
 </AppBar>
