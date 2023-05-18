@@ -13,7 +13,7 @@
 {/if}
 {#each values as value}
   <!-- TODO: Add tooltip from description -->
-  <span class="chip variant-filled m-0.5 cursor-default">
+  <span class="badge variant-filled m-0.5">
     {value.name}
   </span>
 {/each}
