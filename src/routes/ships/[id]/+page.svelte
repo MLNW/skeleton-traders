@@ -1,22 +1,25 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
   import Crew from '$lib/components/ships/Crew.svelte';
+
+  $: ({ symbol, frame, nav, crew } = $page.data.ship.data);
 </script>
 
 <div class="card">
-  {#await $page.data.stream.ship}
-    <LoadingIndicator />
-  {:then ship}
-    <h2>{ship.data.symbol} ({ship.data.frame.name})</h2>
+  <header class="card-header">
+    <h2>{symbol} ({frame.name})</h2>
+  </header>
+  <footer class="card-footer">
     <p>
-      {ship.data.nav.status} in
-      <a href="/systems/{ship.data.nav.systemSymbol}">{ship.data.nav.systemSymbol}</a>
+      {nav.status} in
+      <a href="/systems/{nav.systemSymbol}">{nav.systemSymbol}</a>
+      {#if nav.waypointSymbol}
+        at <a href="/systems/{nav.systemSymbol}/waypoints/{nav.waypointSymbol}">
+          {nav.waypointSymbol}
+        </a>
+      {/if}
     </p>
-    <p>Flight mode: {ship.data.nav.flightMode}</p>
-
-    <Crew crew={ship.data.crew} />
-  {:catch error}
-    <p class="variant-filled-error">{error.code} {error.message}</p>
-  {/await}
+    <p>Flight mode: {nav.flightMode}</p>
+    <Crew {crew} />
+  </footer>
 </div>

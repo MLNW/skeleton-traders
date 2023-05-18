@@ -7,8 +7,6 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders }) => {
   });
 
   return {
-    stream: {
-      ship: fetchShip({ fetch, symbol: params.id })
-    }
+    ship: await fetchShip({ fetch, symbol: params.id })
   };
 };
