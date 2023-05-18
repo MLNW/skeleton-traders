@@ -1,8 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import Cargo from '$lib/components/ships/Cargo.svelte';
   import Crew from '$lib/components/ships/Crew.svelte';
 
-  $: ({ symbol, frame, nav, crew } = $page.data.ship.data);
+  $: ({ symbol, frame, nav, crew, cargo } = $page.data.ship.data);
 </script>
 
 <div class="card">
@@ -21,5 +22,6 @@
     </p>
     <p>Flight mode: {nav.flightMode}</p>
     <Crew {crew} />
+    <Cargo {cargo} />
   </footer>
 </div>
