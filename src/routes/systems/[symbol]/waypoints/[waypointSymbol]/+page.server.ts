@@ -12,12 +12,12 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders }) => {
       systemSymbol: params.symbol,
       waypointSymbol: params.waypointSymbol
     }),
-    stream: {
-      market: fetchMarket({
-        fetch,
-        systemSymbol: params.symbol,
-        waypointSymbol: params.waypointSymbol
-      })
-    }
+    market: await fetchMarket({
+      fetch,
+      systemSymbol: params.symbol,
+      waypointSymbol: params.waypointSymbol
+    }).catch(() => {
+      return { data: {} };
+    })
   };
 };

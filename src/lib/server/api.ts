@@ -44,7 +44,8 @@ export const genericFetch = async ({
 
   if (!response.ok) {
     const reason = await response.json();
-    throw error(response.status, { ...reason.error });
+    console.error(reason.error.message);
+    return Promise.reject(error(response.status, { ...reason.error }));
   }
 
   return response.json();
