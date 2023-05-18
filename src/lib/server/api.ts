@@ -141,3 +141,18 @@ export const fetchWaypoints = async ({
     queryParams: { page, limit }
   });
 };
+
+export const fetchWaypoint = async ({
+  fetch,
+  systemSymbol,
+  waypointSymbol
+}: {
+  fetch: Fetch;
+  systemSymbol: string;
+  waypointSymbol: string;
+}) => {
+  return genericFetch({
+    fetch,
+    url: `${PUBLIC_API_URL}/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`
+  });
+};

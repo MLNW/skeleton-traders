@@ -5,7 +5,7 @@
   $: ({ symbol, type, x, y, factions } = $page.data.system.data);
 </script>
 
-<div class="container">
+<div>
   <h1>{symbol} ({type})</h1>
   <p>Position: ({x}, {y})</p>
 
@@ -20,7 +20,10 @@
         <div class="flex flex-wrap">
           <!-- TODO: Integrate pagination -->
           {#each waypoints.data as waypoint}
-            <div class="card card-hover m-1 w-[18rem]">
+            <a
+              class="card card-hover m-1 w-[18rem]"
+              href="/systems/{symbol}/waypoints/{waypoint.symbol}"
+            >
               <header class="card-header">
                 <h3>{waypoint.symbol} ({waypoint.type})</h3>
               </header>
@@ -34,7 +37,7 @@
                 </div>
                 <!-- TODO: Show orbitals? -->
               </div>
-            </div>
+            </a>
           {/each}
         </div>
       {/await}
