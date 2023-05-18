@@ -10,8 +10,8 @@
   <header class="card-header">
     <h2>{symbol} ({frame.name})</h2>
   </header>
-  <footer class="card-footer">
-    <p>
+  <footer class="card-footer flex flex-col">
+    <span>
       <span class="badge variant-filled">
         {nav.status}
       </span>
@@ -22,8 +22,8 @@
           {nav.waypointSymbol}
         </a>
       {/if}
-    </p>
-    <p>Flight mode: <span class="badge variant-filled">{nav.flightMode}</span></p>
+    </span>
+    <span>Flight mode: <span class="badge variant-filled">{nav.flightMode}</span></span>
     <Crew {crew} />
     <Cargo {cargo} />
   </footer>
