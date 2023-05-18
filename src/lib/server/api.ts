@@ -123,3 +123,21 @@ export const fetchSystems = async ({
 export const fetchSystem = async ({ fetch, symbol }: { fetch: Fetch; symbol: string }) => {
   return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/systems/${symbol}` });
 };
+
+export const fetchWaypoints = async ({
+  fetch,
+  systemSymbol,
+  page,
+  limit
+}: {
+  fetch: Fetch;
+  systemSymbol: string;
+  page?: number;
+  limit?: number;
+}) => {
+  return genericFetch({
+    fetch,
+    url: `${PUBLIC_API_URL}/v2/systems/${systemSymbol}/waypoints`,
+    queryParams: { page, limit }
+  });
+};
