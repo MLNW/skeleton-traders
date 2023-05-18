@@ -12,7 +12,10 @@
   </header>
   <footer class="card-footer">
     <p>
-      {nav.status} in
+      <span class="badge variant-filled">
+        {nav.status}
+      </span>
+      in
       <a href="/systems/{nav.systemSymbol}">{nav.systemSymbol}</a>
       {#if nav.waypointSymbol}
         at <a href="/systems/{nav.systemSymbol}/waypoints/{nav.waypointSymbol}">
@@ -20,7 +23,7 @@
         </a>
       {/if}
     </p>
-    <p>Flight mode: {nav.flightMode}</p>
+    <p>Flight mode: <span class="badge variant-filled">{nav.flightMode}</span></p>
     <Crew {crew} />
     <Cargo {cargo} />
   </footer>

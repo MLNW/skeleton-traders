@@ -9,7 +9,7 @@
   <footer class="card-footer flex flex-col">
     <span>Current: {crew.current} of {crew.capacity}</span>
     <span>Required: {crew.required}</span>
-    <span>Rotation: {crew.rotation}</span>
+    <span>Rotation: <span class="badge variant-filled">{crew.rotation}</span></span>
     <span>Moral: {crew.morale}</span>
     <span>Wages: {crew.wages}</span>
   </footer>
