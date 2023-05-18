@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { convertSymbolToName } from '$lib/utils/symbols';
   import { Render, Subscribe, createTable } from 'svelte-headless-table';
   import { readable } from 'svelte/store';
 
@@ -8,9 +9,9 @@
 
   $: table = createTable(tableData);
   $: columns = table.createColumns([
-    table.column({ header: 'Name', accessor: 'symbol' }),
+    table.column({ header: 'Name', accessor: (e) => convertSymbolToName(e.symbol) }),
     table.column({ header: 'Volume', accessor: 'tradeVolume' }),
-    table.column({ header: 'Supply', accessor: 'supply' }),
+    table.column({ header: 'Supply', accessor: (e) => convertSymbolToName(e.supply) }),
     table.column({ header: 'Buy', accessor: 'purchasePrice' }),
     table.column({ header: 'Sell', accessor: 'sellPrice' })
   ]);

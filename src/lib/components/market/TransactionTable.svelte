@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { convertSymbolToName } from '$lib/utils/symbols';
   import { Render, Subscribe, createTable } from 'svelte-headless-table';
   import { readable } from 'svelte/store';
 
@@ -10,11 +11,11 @@
   $: columns = table.createColumns([
     table.column({ header: 'When', accessor: 'timestamp' }),
     table.column({ header: 'Ship', accessor: 'shipSymbol' }),
-    table.column({ header: 'Good', accessor: 'tradeSymbol' }),
+    table.column({ header: 'Good', accessor: (e) => convertSymbolToName(e.tradeSymbol) }),
     table.column({ header: 'Type', accessor: 'type' }),
     table.column({ header: 'Units', accessor: 'units' }),
     table.column({ header: 'Per Unit', accessor: 'pricePerUnit' }),
-    table.column({ header: 'Total', accessor: 'totalPrice' }),
+    table.column({ header: 'Total', accessor: 'totalPrice' })
   ]);
   $: ({ headerRows, rows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns));
 </script>
@@ -53,4 +54,3 @@
     </tbody>
   </table>
 </div>
-
