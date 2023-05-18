@@ -156,3 +156,18 @@ export const fetchWaypoint = async ({
     url: `${PUBLIC_API_URL}/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}`
   });
 };
+
+export const fetchMarket = async ({
+  fetch,
+  systemSymbol,
+  waypointSymbol
+}: {
+  fetch: Fetch;
+  systemSymbol: string;
+  waypointSymbol: string;
+}) => {
+  return genericFetch({
+    fetch,
+    url: `${PUBLIC_API_URL}/v2/systems/${systemSymbol}/waypoints/${waypointSymbol}/market`
+  });
+};

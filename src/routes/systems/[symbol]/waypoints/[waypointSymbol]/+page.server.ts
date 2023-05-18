@@ -1,4 +1,4 @@
-import { fetchWaypoint } from '$lib/server/api';
+import { fetchMarket, fetchWaypoint } from '$lib/server/api';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, setHeaders }) => {
@@ -11,6 +11,13 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders }) => {
       fetch,
       systemSymbol: params.symbol,
       waypointSymbol: params.waypointSymbol
-    })
+    }),
+    stream: {
+      market: fetchMarket({
+        fetch,
+        systemSymbol: params.symbol,
+        waypointSymbol: params.waypointSymbol
+      })
+    }
   };
 };
