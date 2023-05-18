@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import Chips from '$lib/components/Chips.svelte';
+  import Badges from '$lib/components/Badges.svelte';
   import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
 
   $: ({ symbol, type, x, y, factions } = $page.data.system.data);
@@ -31,7 +31,7 @@
               <div class="flex flex-col space-y-1 px-4 pb-4">
                 <span>Position: ({waypoint.x}, {waypoint.y})</span>
                 <div>
-                  <Chips values={waypoint.traits} none={false} />
+                  <Badges values={waypoint.traits} none={false} />
                 </div>
                 <!-- TODO: Show orbitals? -->
               </div>

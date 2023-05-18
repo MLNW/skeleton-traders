@@ -1,7 +1,7 @@
 <script lang="ts">
+  import Badges from '$lib/components/Badges.svelte';
   import TradeGoodTable from '$lib/components/market/TradeGoodTable.svelte';
   import TransactionTable from '$lib/components/market/TransactionTable.svelte';
-  import Chips from '../Chips.svelte';
 
   export let market: object;
 </script>
@@ -24,15 +24,15 @@
       {:else}
         <section>
           <h3>Imports</h3>
-          <Chips values={market.imports} />
+          <Badges values={market.imports} />
         </section>
         <section>
           <h3>Exports</h3>
-          <Chips values={market.exports} />
+          <Badges values={market.exports} />
         </section>
         <section>
           <h3>Exchange</h3>
-          <Chips values={market.exchange} />
+          <Badges values={market.exchange} />
         </section>
       {/if}
     </footer>

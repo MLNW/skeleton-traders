@@ -1,10 +1,10 @@
 <script lang="ts">
-  type ChipValue = {
+  type BadgeValue = {
     name: string;
     description?: string;
   };
 
-  export let values: ChipValue[];
+  export let values: BadgeValue[];
   export let none: boolean = true;
 </script>
 

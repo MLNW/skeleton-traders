@@ -2,8 +2,8 @@
   import { convertSymbolToName } from '$lib/utils/symbols';
   import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
   import { readable } from 'svelte/store';
-  import Badge from './Badge.svelte';
-  import Number from './Number.svelte';
+  import Badge from '../Badge.svelte';
+  import Number from '../tables/Number.svelte';
 
   export let data: object;
 
@@ -38,7 +38,7 @@
   $: ({ headerRows, rows, tableAttrs, tableBodyAttrs } = table.createViewModel(columns));
 </script>
 
-<div class="table-container flex flex-col space-y-2">
+<div class="table-container">
   <table class="table table-compact table-hover" {...$tableAttrs}>
     <thead>
       {#each $headerRows as headerRow (headerRow.id)}

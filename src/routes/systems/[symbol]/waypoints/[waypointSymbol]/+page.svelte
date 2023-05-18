@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import Chips from '$lib/components/Chips.svelte';
+  import Badges from '$lib/components/Badges.svelte';
   import Market from '$lib/components/market/Market.svelte';
 
   $: ({ symbol, systemSymbol, type, x, y, faction, traits, chart } = $page.data.waypoint.data);
@@ -15,7 +15,7 @@
   <span>Faction: {faction.symbol}</span>
   <span>Charted by {chart.submittedBy} on {chart.submittedOn}</span>
   <div>
-    <Chips values={traits} none={false} />
+    <Badges values={traits} none={false} />
   </div>
 
   <Market market={$page.data.market.data} />

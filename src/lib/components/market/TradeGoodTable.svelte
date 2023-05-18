@@ -1,10 +1,10 @@
 <script lang="ts">
+  import Number from '$lib/components/tables/Number.svelte';
   import { convertSymbolToName } from '$lib/utils/symbols';
   import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
   import { readable } from 'svelte/store';
-  import Badge from './Badge.svelte';
+  import Badge from '../Badge.svelte';
   import BuySellButton from './BuySellButton.svelte';
-  import Number from './Number.svelte';
 
   export let data: object[];
 

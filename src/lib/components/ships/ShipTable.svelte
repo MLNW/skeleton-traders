@@ -1,22 +1,22 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { Paginator } from '@skeletonlabs/skeleton';
-  import { Render, Subscribe, createTable } from 'svelte-headless-table';
+  import { Render, Subscribe, createRender, createTable } from 'svelte-headless-table';
   import { readable } from 'svelte/store';
+  import Badge from '../Badge.svelte';
+  import Number from '../tables/Number.svelte';
 
-  export let ships: object[];
-  export let page = 1;
-  export let limit = 5;
+  export let ships: object;
   export let onPageChange: (e: CustomEvent) => void;
   export let onAmountChange: (e: CustomEvent) => void;
 
-  $: tableData = readable(ships);
+  $: tableData = readable(ships.data);
 
   $: pageOptions = {
-    offset: page - 1,
-    limit,
-    size: ships.length,
-    amounts: [1, 2, 5, 10]
+    offset: ships.meta.page - 1,
+    limit: ships.meta.limit,
+    size: ships.meta.total,
+    amounts: [5, 10, 15, 20]
   };
 
   $: table = createTable(tableData);
@@ -25,8 +25,16 @@
     table.column({ header: 'System', accessor: (e) => e.nav.systemSymbol }),
     table.column({ header: 'Waypoint', accessor: (e) => e.nav.waypointSymbol }),
     table.column({ header: 'Crew', accessor: (e) => `${e.crew.current}/${e.crew.capacity}` }),
-    table.column({ header: 'Status', accessor: (e) => e.nav.status }),
-    table.column({ header: 'Speed', accessor: (e) => e.engine.speed }),
+    table.column({
+      header: 'Status',
+      accessor: (e) => e.nav.status,
+      cell: ({ value }) => createRender(Badge, { text: value })
+    }),
+    table.column({
+      header: () => createRender(Number, { value: 'Speed' }),
+      accessor: (e) => e.engine.speed,
+      cell: ({ value }) => createRender(Number, { value })
+    }),
     table.column({ header: 'Fuel', accessor: (e) => `${e.fuel.current}/${e.fuel.capacity}` }),
     table.column({ header: 'Cargo', accessor: (e) => `${e.cargo.units}/${e.cargo.capacity}` })
   ]);

@@ -9,7 +9,7 @@
   let pageNumber = 1;
   let limit = 5;
 
-  const handleShipPagination = (e: CustomEvent) => {
+  const handlePagination = (e: CustomEvent) => {
     if (e.type === 'amount') {
       limit = e.detail;
     } else if (e.type === 'page') {
@@ -34,11 +34,9 @@
         <LoadingIndicator />
       {:then ships}
         <ShipTable
-          ships={ships.data}
-          page={pageNumber}
-          {limit}
-          onAmountChange={handleShipPagination}
-          onPageChange={handleShipPagination}
+          {ships}
+          onAmountChange={handlePagination}
+          onPageChange={handlePagination}
         />
       {/await}
     </div>
