@@ -43,13 +43,15 @@ export const handleFetch = async ({ fetch, request, event }) => {
     request.headers.set('Authorization', `Bearer ${token}`);
   }
 
+  console.log(request, request.headers);
   const start = Date.now();
   const response = await fetch(request);
   const elapsedTime = Date.now() - start;
   console.log(`${request.method} ${request.url} -> ${response.status} (${elapsedTime}ms) `);
 
   if (event.route.id !== '/login' && response.status === 401) {
-    console.log('Token is invalid or expired, redirecting to /logout');
+    const error = await response.json();
+    console.log('Token is invalid or expired, redirecting to /logout', error);
     redirect(307, '/logout');
   }
 
