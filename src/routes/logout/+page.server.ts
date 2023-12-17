@@ -1,15 +1,15 @@
 import { redirect } from '@sveltejs/kit';
 
 export const load = ({ cookies }) => {
-  cookies.delete('token');
+  cookies.delete('token', { path: '/' });
 
-  throw redirect(303, '/login');
+  redirect(303, '/login');
 };
 
 export const actions = {
   default: ({ cookies }) => {
-    cookies.delete('token');
+    cookies.delete('token', { path: '/' });
 
-    throw redirect(303, '/login');
+    redirect(303, '/login');
   }
 };

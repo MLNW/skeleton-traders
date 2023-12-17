@@ -25,7 +25,7 @@ export const actions = {
 
     try {
       const response = await login({ fetch, token: token });
-      cookies.set('token', token);
+      cookies.set('token', token, { path: '/' });
 
       return {
         agent: response.data
@@ -56,7 +56,7 @@ export const actions = {
       });
       const agent = response.data;
 
-      cookies.set('token', agent.token);
+      cookies.set('token', agent.token, { path: '/' });
       return { agent };
     } catch (e) {
       return fail(e.status, { register: { error: e.body.message } });

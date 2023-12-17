@@ -13,7 +13,7 @@
   $: tableData = readable(ships.data);
 
   $: pageOptions = {
-    offset: ships.meta.page - 1,
+    page: ships.meta.page - 1,
     limit: ships.meta.limit,
     size: ships.meta.total,
     amounts: [5, 10, 15, 20]

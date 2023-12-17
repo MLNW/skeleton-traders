@@ -14,7 +14,7 @@
   $: tableData = readable(systems.data);
 
   $: pageOptions = {
-    offset: systems.meta.page - 1,
+    page: systems.meta.page - 1,
     limit: systems.meta.limit,
     size: systems.meta.total,
     amounts: [5, 10, 15, 20]

@@ -36,16 +36,18 @@ export const genericFetch = async ({
   queryParams = undefined
 }: FetchOptions) => {
   const urlWithParams = constructUrl(url, queryParams);
-  const response = await fetch(urlWithParams, {
+  const options = {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined
-  });
+  };
+
+  const response = await fetch(urlWithParams, options);
 
   if (!response.ok) {
     const reason = await response.json();
     console.error(reason.error.message);
-    return Promise.reject(error(response.status, { ...reason.error }));
+    error(response.status, { ...reason.error });
   }
 
   return response.json();
@@ -79,6 +81,7 @@ export const register = async ({
     url: `${PUBLIC_API_URL}/v2/register`,
     method: 'POST',
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     },
     body: { symbol: name, faction }

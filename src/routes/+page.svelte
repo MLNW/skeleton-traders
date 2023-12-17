@@ -33,11 +33,7 @@
       {#await $page.data.stream.ships}
         <LoadingIndicator />
       {:then ships}
-        <ShipTable
-          {ships}
-          onAmountChange={handlePagination}
-          onPageChange={handlePagination}
-        />
+        <ShipTable {ships} onAmountChange={handlePagination} onPageChange={handlePagination} />
       {/await}
     </div>
   </div>

@@ -1,17 +1,12 @@
 {
-  "editor.rulers": [
-    80,
-    100
-  ],
+  "editor.rulers": [80, 100],
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "modifications",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
-  "prettier.documentSelectors": [
-    "**/*.svelte"
-  ],
+  "prettier.documentSelectors": ["**/*.svelte"],
   "tailwindCSS.classAttributes": [
     "class",
     "accent",

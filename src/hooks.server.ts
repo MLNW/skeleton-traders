@@ -14,19 +14,22 @@ const logger = (async ({ event, resolve }) => {
 
 const authorize = (async ({ event, resolve }) => {
   const token = event.cookies.get('token');
-  if (token) {
-    const response = await login({ fetch, token });
-    if (response.status === 401) {
-      throw redirect(307, '/logout');
-    }
 
+  if (event.url.pathname === '/logout') {
+    event.locals.user = {};
+  } else if (token) {
+    const response = await login({ fetch, token }).catch((reason) => {
+      if (reason.status === 401) {
+        redirect(307, '/logout');
+      }
+    });
     event.locals.user = { ...response.data };
     if (event.url.pathname === '/login') {
-      throw redirect(307, '/');
+      redirect(307, '/');
     }
   } else if (event.url.pathname !== '/login') {
     event.locals.user = {};
-    throw redirect(307, '/login');
+    redirect(307, '/login');
   }
 
   return resolve(event);
@@ -47,7 +50,7 @@ export const handleFetch = async ({ fetch, request, event }) => {
 
   if (event.route.id !== '/login' && response.status === 401) {
     console.log('Token is invalid or expired, redirecting to /logout');
-    throw redirect(307, '/logout');
+    redirect(307, '/logout');
   }
 
   return response;
