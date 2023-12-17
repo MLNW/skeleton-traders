@@ -1,5 +1,9 @@
 import { PUBLIC_API_URL } from '$env/static/public';
+import type { paths } from '$lib/spacetraders';
 import { error } from '@sveltejs/kit';
+import createClient from 'openapi-fetch';
+
+const { GET, POST } = createClient<paths>({ baseUrl: PUBLIC_API_URL });
 
 type Fetch = typeof fetch;
 
@@ -105,7 +109,22 @@ export const fetchShips = async ({
 };
 
 export const fetchShip = async ({ fetch, symbol }: { fetch: Fetch; symbol: string }) => {
-  return genericFetch({ fetch, url: `${PUBLIC_API_URL}/v2/my/ships/${symbol}` });
+  const { data, error: e } = await GET('/my/ships/{shipSymbol}', {
+    fetch,
+    params: {
+      path: {
+        shipSymbol: symbol
+      }
+    }
+  });
+
+  console.log(data, e);
+
+  if (e !== undefined) {
+    error(500, e);
+  }
+
+  return data;
 };
 
 export const fetchFactions = async ({ fetch }: { fetch: Fetch }) => {
